@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Winners of Completed Elections</h1>
+
+    <div class="list-group mt-4">
+        {% for item in election_winners %}
+            <div class="list-group-item">
+                <h2 class="mb-3">{{ item.election.name }}</h2>
+                {% if item.winner_candidate %}
+                    <p class="mb-1">The winner of this election is {{ item.winner_candidate.name }}.</p>
+                    <p class="mb-1">Total Votes: {{ item.total_votes }}</p>
+                    {% if item.winner_candidate.image %}
+                        <img src="{{ item.winner_candidate.image.url }}" alt="{{ item.winner_candidate.name }}"   class="img-fluid">
+                    {% endif %}
+                {% else %}
+                    <p>No winner declared for this election.</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

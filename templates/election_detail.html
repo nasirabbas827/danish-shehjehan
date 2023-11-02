@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ election.name }} Details</h1>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Status: {{ election.status }}</h2>
+        </div>
+    </div>
+
+    <h2 class="mt-4">Candidates:</h2>
+    <div class="card-deck">
+        {% for candidate in candidates %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ candidate.name }}</h5>
+                    {% if candidate.image %}
+                        <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}" width="200px" height="200px"  class="img-fluid">
+                    {% endif %}
+                    <p class="card-text"><strong>Description:</strong> {{ candidate.description }}</p>
+                    <form method="post" action="{% url 'vote' election.id candidate.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Vote</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

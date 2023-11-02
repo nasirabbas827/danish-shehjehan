@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+    <!-- Add your CSS links or other head content here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS styles */
+        body {
+            background-color: aquamarine;
+
+        }
+        h1 , h2, h3 , h4{
+            text-align: center;
+            margin: 30px;
+        }
+        .course-card {
+            margin-bottom: 20px;
+        }
+        /* Style for the carousel */
+        .carousel-item {
+            height: 400px; 
+            position: relative;
+        }
+        .carousel-caption {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">EVS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+            <li class="nav-item active ">
+                <span class="navbar-link"></span>
+            </li>
+            <li class="nav-item active ">
+                <a class="nav-link" href="{% url 'home' %}">Welcome, {{ user.username }}</a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'update_profile' %}">Update Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'change_password' %}">Change Password</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'election_winners' %}">Winner</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/">Admin Login</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+
+    {% block content %}
+    {% endblock %}
+    <footer class="mt-5 py-3 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Column 1 Content -->
+                    <h5>About Online Voting</h5>
+                    <p>Learn about our secure online voting platform powered by blockchain technology.</p>
+                    <a href="#">Read More</a>
+                </div>
+                <div class="col-md-3">
+                    <!-- Column 2 Content -->
+                    <h5>Vote Online</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Cast Your Vote</a></li>
+                        <li><a href="#">Election Results</a></li>
+                        <li><a href="#">Voting Process</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <!-- Column 3 Content -->
+                    <h5>Contact Us</h5>
+                    <p>If you have any questions or need assistance with online voting, please get in touch.</p>
+                    <a href="#">Contact Form</a>
+                </div>
+                <div class="col-md-3">
+                    <!-- Column 4 Content (optional) -->
+                    <h5>Security &amp; Privacy</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Blockchain Technology</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>&copy; 2023 Online Voting Platform. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+
+<!-- Add your JavaScript links or other footer content here -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Add Bootstrap JS and jQuery links (at the end of the body) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
