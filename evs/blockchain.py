@@ -1,64 +1,55 @@
 import hashlib
 import time
+from .models import VoteBlocks
 
 class Block:
-    def __init__(self, index, previous_hash, timestamp, transactions, nonce=0):
+    def __init__(self, index, previous_hash, transactions, timestamp):
         self.index = index
         self.previous_hash = previous_hash
-        self.timestamp = timestamp
         self.transactions = transactions
-        self.nonce = nonce
-        self.hash = self.calculate_hash()
+        self.timestamp = timestamp
+        self.nonce = 0
 
     def calculate_hash(self):
-        data = str(self.index) + self.previous_hash + str(self.timestamp) + str(self.transactions) + str(self.nonce)
+        data = str(self.index) + self.previous_hash + str(self.transactions) + str(self.timestamp) + str(self.nonce)
         return hashlib.sha256(data.encode()).hexdigest()
 
 class Blockchain:
     def __init__(self):
         self.chain = [self.create_genesis_block()]
-        self.difficulty = 4  # Number of leading zeroes for Proof of Work
 
     def create_genesis_block(self):
-        return Block(0, "0", int(time.time()), "Genesis Block")
+        return Block(0, "0", "Genesis Block", int(time.time()))
 
     def get_last_block(self):
         return self.chain[-1]
 
     def add_block(self, new_block):
-        new_block.previous_hash = self.get_last_block().hash
-        new_block.hash = new_block.calculate_hash()
+        new_block.previous_hash = self.get_last_block().calculate_hash()
         new_block.nonce = self.proof_of_work(new_block)
         self.chain.append(new_block)
 
-    def proof_of_work(self, block):
-        target = "0" * self.difficulty
-        while block.hash[:self.difficulty] != target:
+    def proof_of_work(self, block, difficulty=2):
+        while True:
+            hash_attempt = block.calculate_hash()
+            if hash_attempt[:difficulty] == "0" * difficulty:
+                return block.nonce
             block.nonce += 1
-            block.hash = block.calculate_hash()
-        return block.nonce
 
+    def add_block_to_database(self, user, candidate):
+        # Create a transaction for the vote
+        transaction = {
+            'voter': user.username,
+            'candidate': candidate.name,
+            'timestamp': int(time.time())
+        }
 
-# Add the create_blockchain_code function to generate a blockchain code for the vote
+        # Add the transaction to a new block
+        new_block = Block(len(self.chain), self.get_last_block().calculate_hash(), transaction, int(time.time()))
+        self.add_block(new_block)
 
-def create_blockchain_code(user, candidate):
-    blockchain = Blockchain()
-    last_block = blockchain.get_last_block()
-
-    # Construct a transaction for the vote
-    transaction_data = {
-        "user_id": user.id,
-        "candidate_id": candidate.id,
-    }
-
-    new_block = Block(
-        index=last_block.index + 1,
-        previous_hash=last_block.hash,
-        timestamp=int(time.time()),
-        transactions=transaction_data,
-    )
-
-    # Add the new block to the blockchain
-    blockchain.add_block(new_block)
-
-    return new_block.hash
+        # Save the blockchain code in the database
+        blockchain_code = new_block.calculate_hash()
+        blockchain_entry = VoteBlocks(user=user, candidate=candidate, blockchain_code=blockchain_code)
+        blockchain_entry.save()
+        return blockchain_code

@@ -53,13 +53,18 @@
               <div class="card-body">
                   <h5 class="card-title">{{ election.name }}</h5>
                   <p class="card-text">Status: {{ election.status }}</p>
-                  <a href="{% url 'election_detail' election.id %}" class="btn btn-primary">View Details</a>
+                  {% if user.is_authenticated %}
+                      <a href="{% url 'election_detail' election.id %}" class="btn btn-primary">View Details</a>
+                  {% else %}
+                      <p>Please <a href="{% url 'login' %}">log in</a> to view details</p>
+                  {% endif %}
               </div>
           </div>
       </div>
       {% endfor %}
   </div>
 </div>
+
 
 
     <section class="container mt-5">

@@ -10,23 +10,32 @@
     </div>
 
     <h2 class="mt-4">Candidates:</h2>
-    <div class="card-deck">
+    <div class="row">
         {% for candidate in candidates %}
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ candidate.name }}</h5>
-                    {% if candidate.image %}
-                        <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}" width="200px" height="200px"  class="img-fluid">
-                    {% endif %}
-                    <p class="card-text"><strong>Description:</strong> {{ candidate.description }}</p>
-                    <form method="post" action="{% url 'vote' election.id candidate.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-primary">Vote</button>
-                    </form>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ candidate.name }}</h5>
+                        {% if candidate.image %}
+                            <img src="{{ candidate.image.url }}" alt="{{ candidate.name }}" width="200px" height="200px" class="img-fluid">
+                        {% endif %}
+                        <p class="card-text"><strong>Description:</strong> {{ candidate.description }}</p>
+                        
+                        <p><strong>Party:</strong> {{ candidate.party_name }}</p>
+                        {% if candidate.party_symbol %}
+                             <strong>Party Symbol:</strong> <img src="{{ candidate.party_symbol.url }}" alt="Party Symbol" width="150px" height="150px" class="img-fluid">
+                        {% endif %}
+                        
+                        <form method="post" action="{% url 'vote' election.id candidate.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="mt-3 btn btn-primary">Vote</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+    
 
 </div>
 {% endblock %}
