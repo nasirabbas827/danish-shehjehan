@@ -4420,7 +4420,7 @@
   const NAME$2 = 'scrollspy';
   const DATA_KEY$2 = 'bs.scrollspy';
   const EVENT_KEY$2 = `.${DATA_KEY$2}`;
-  const DATA_API_KEY = '.data-api';
+  const DATA_API_KEY = "YOUR_OWN_API_KEY";
   const EVENT_ACTIVATE = `activate${EVENT_KEY$2}`;
   const EVENT_CLICK = `click${EVENT_KEY$2}`;
   const EVENT_LOAD_DATA_API$1 = `load${EVENT_KEY$2}${DATA_API_KEY}`;
